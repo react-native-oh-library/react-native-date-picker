@@ -11,16 +11,16 @@ import { RNC } from "@rnoh/react-native-openharmony/generated/ts"
 
 
 interface NativeDatePickerProps extends ViewRawProps {
-  mode?: string;
-  date?: string;
-  open?: boolean;
-  modal?:boolean;
+  mode?: string | undefined;
+  date?: string | undefined;
+  open?: boolean | undefined;
+  modal?:boolean | undefined;
   onConfirm?:(timestamp:string) => void
   onDateChange?:(timestamp:string) => void
-  onChange?:() => void
+  onChange?:(timestamp:string) => void 
   onCancel?:() => void
-  maximumDate?: string
-  minimumDate?: string
+  maximumDate?: string | undefined
+  minimumDate?: string | undefined
 }
 export interface AutoLayoutProps {}
 export type NativeDatePickerDescriptor = Descriptor<"NativeDatePickerView", ViewBaseProps,AutoLayoutProps,NativeDatePickerProps>
@@ -31,7 +31,7 @@ export struct NativeDatePickerView {
   public ctx!: RNComponentContext
   public tag: number = 0
   @State descriptor: NativeDatePickerDescriptor = {} as NativeDatePickerDescriptor
-  @State fontSize: number | undefined = undefined
+  @State date: string  = new Date().toString()
   private cleanUpCallbacks: (() => void)[] = []
   private eventEmitter: RNC.NativeDatePickerView.EventEmitter | undefined = undefined
   aboutToAppear() {
@@ -47,7 +47,12 @@ export struct NativeDatePickerView {
   aboutToDisappear() {
     this.cleanUpCallbacks.forEach(cb => cb())
   }
-
+  addZero(e:number) : string{
+      if(e < 10){
+        return  0 +''+e
+      }
+      return e +''
+  }
   build() {
     RNViewBase({ ctx: this.ctx, tag: this.tag }) {
       if(!this.descriptor.rawProps.modal){
@@ -58,12 +63,42 @@ export struct NativeDatePickerView {
             end: new Date(this.descriptor.rawProps.maximumDate),
             }).onDateChange((value: Date) => {
             this.eventEmitter!.emit("dateChange", {timestamp: JSON.stringify(value)})
-          }).height(300)
+          }).height(200)
+      }
+      else if(this.descriptor.rawProps.mode === 'datetime'){
+        Column(){
+          Flex() { // 子组件在容器主轴上反向行布局
+            DatePicker({
+              start: new Date(this.descriptor.rawProps.minimumDate),
+              end: new Date(this.descriptor.rawProps.maximumDate),
+            }).onDateChange((value: Date) => {
+              let y = new Date(value).getFullYear()
+              let M = this.addZero(new Date(value).getMonth() + 1)
+              let d = new Date(value).getDate()
+              let h = this.addZero(new Date(this.date).getHours())
+              let m = this.addZero(new Date(this.date).getMinutes())
+              let s = this.addZero(new Date(this.date).getSeconds())
+              let stDate = y + '-' + M + '-' + d + ' '+ h + ':' + m + ':' + s
+              Logger.info(stDate, 'datetimeChange')
+              this.date = new Date(stDate).toString()
+              this.eventEmitter!.emit("dateChange", { timestamp: stDate })
+            }).width('53%').height(200)
+            TimePicker().onChange((value: TimePickerResult) => {
+              let y = new Date(this.date).getFullYear()
+              let M = this.addZero(new Date(this.date).getMonth() + 1)
+              let d = new Date(this.date).getDate()
+              let stDate = y + '-' + M + '-' + d + '-' +' '+ value.hour+':'+ value.minute+':'+ '00'
+              this.date = new Date(stDate).toString()
+              Logger.info(stDate, 'datetimeChange')
+              this.eventEmitter!.emit("dateChange", { timestamp: this.date })
+            }).width('47%').height(200)
+          }
+        }
       }
       else if(this.descriptor.rawProps.mode === 'time'){
           TimePicker().onChange((value: TimePickerResult) => {
             this.eventEmitter!.emit("dateChange", {timestamp: JSON.stringify(value)})
-          }).height(300)
+          }).height(200)
       }
       }else{
         // modal
@@ -129,7 +164,6 @@ export struct NativeDatePickerView {
               })
             })
           }
-
         }
       }
     }
