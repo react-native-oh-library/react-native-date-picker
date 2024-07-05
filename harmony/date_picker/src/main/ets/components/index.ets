@@ -17,7 +17,6 @@ interface NativeDatePickerProps extends ViewRawProps {
   modal?:boolean | undefined;
   onConfirm?:(timestamp:string) => void
   onDateChange?:(timestamp:string) => void
-  onChange?:(timestamp:string) => void
   onCancel?:() => void
   maximumDate?: string | undefined
   minimumDate?: string | undefined
@@ -73,7 +72,7 @@ export struct NativeDatePickerView {
             start: new Date(this.descriptor.rawProps.minimumDate),
             end: new Date(this.descriptor.rawProps.maximumDate),
           }).onDateChange((value: Date) => {
-            this.eventEmitter!.emit("change", {timestamp: this.getDate(value.toString())})
+            this.eventEmitter!.emit("dateChange", {timestamp: this.getDate(value.toString())})
           }).height(200)
         }
         else if(this.descriptor.rawProps.mode === 'datetime'){
@@ -92,16 +91,16 @@ export struct NativeDatePickerView {
                 let stDate = y + '-' + M + '-' + d + ' '+ h + ':' + m + ':' + s
                 Logger.info(stDate, 'datetimeChange')
                 this.date = new Date(stDate).toString()
-                this.eventEmitter!.emit("change", { timestamp: stDate })
+                this.eventEmitter!.emit("dateChange", { timestamp: stDate })
               }).width('53%').height(200)
               TimePicker().onChange((value: TimePickerResult) => {
                 let y = new Date(this.date).getFullYear()
                 let M = this.addZero(new Date(this.date).getMonth() + 1)
                 let d = this.addZero(new Date(this.date).getDate())
-                let stDate = y + '-' + M + '-' + d +' '+ value.hour+':'+ value.minute+':'+ '00'
+                let stDate = y + '-' + M + '-' + d +' '+ this.addZero(value.hour)+':'+ this.addZero(value.minute)+':'+ '00'
                 this.date = new Date(stDate).toString()
                 Logger.info(stDate, 'datetimeChange')
-                this.eventEmitter!.emit("change", { timestamp: stDate })
+                this.eventEmitter!.emit("dateChange", { timestamp: stDate })
               }).width('47%').height(200)
             }
           }
@@ -111,8 +110,8 @@ export struct NativeDatePickerView {
             let y = new Date(this.date).getFullYear()
             let M = this.addZero(new Date(this.date).getMonth() + 1)
             let d = this.addZero(new Date(this.date).getDate())
-            let stDate = y + '-' + M + '-' + d  +' '+ value.hour+':'+ value.minute+':'+ '00'
-            this.eventEmitter!.emit("change", {timestamp:stDate})
+            let stDate = y + '-' + M + '-' + d  +' '+ this.addZero(value.hour)+':'+ this.addZero(value.minute)+':'+ '00'
+            this.eventEmitter!.emit("dateChange", {timestamp:stDate})
           }).height(200)
         }
       }else{
@@ -131,7 +130,7 @@ export struct NativeDatePickerView {
                   Logger.info("calendar onCancel")
                 },
                 onChange: (value: Date) => {
-                  this.eventEmitter!.emit("change", {timestamp: this.getDate(value.toString())})
+                  this.eventEmitter!.emit("dateChange", {timestamp: this.getDate(value.toString())})
                   Logger.info("DatePickerDialog:onDateChange()" + value.toString())
                 },
                 onDidDisappear:()=>{
@@ -155,7 +154,7 @@ export struct NativeDatePickerView {
                   Logger.info("DatePickerDialog:onCancel()")
                 },
                 onDateChange: (value: Date) => {
-                  this.eventEmitter!.emit("change", { timestamp: this.getDate(value.toString()) })
+                  this.eventEmitter!.emit("dateChange", { timestamp: this.getDate(value.toString()) })
                   Logger.info("DatePickerDialog:onDateChange()" + value.toString())
                 },
                 onDidDisappear:()=>{
@@ -187,7 +186,7 @@ export struct NativeDatePickerView {
                   let M = this.addZero(new Date().getMonth() + 1)
                   let d = this.addZero(new Date().getDate())
                   let stDate = y + '-' + M + '-' + d +' '+ this.addZero(value.hour)+':'+ this.addZero(value.minute)+':'+ '00'
-                  this.eventEmitter!.emit("change", { timestamp: stDate })
+                  this.eventEmitter!.emit("dateChange", { timestamp: stDate })
                   Logger.info("TimePickerDialog:onChange()" + stDate)
                 },
                 onDidDisappear:()=>{
