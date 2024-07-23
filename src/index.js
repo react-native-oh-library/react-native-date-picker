@@ -2,7 +2,10 @@ import React from 'react'
 import { Appearance, Platform, Text } from 'react-native'
 import { colorToHex } from './colorToHex'
 import { throwIfInvalidProps } from './propChecker'
-
+import NativeDatePickerView from './NativeDatePickerView'
+export {
+  NativeDatePickerView
+}
 /** @type {React.FC<PlatformPickerProps>} */
 const DatePicker = Platform.select({
   android: () => require('./DatePickerAndroid').DatePickerAndroid,
@@ -60,3 +63,4 @@ const getTitle = (props) => {
 }
 
 export default React.memo(DatePickerWrapper)
+ 
