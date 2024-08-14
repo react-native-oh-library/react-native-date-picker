@@ -2,6 +2,7 @@ import React from 'react'
 import { Appearance, Platform, Text } from 'react-native'
 import { colorToHex } from './colorToHex'
 import { throwIfInvalidProps } from './propChecker'
+import NativeDatePicker from './DatePickerHarmony'
 
 /** @type {React.FC<PlatformPickerProps>} */
 const DatePicker = Platform.select({
@@ -58,5 +59,7 @@ const getTitle = (props) => {
   if (mode === 'time') return 'Select time'
   return 'Select date'
 }
+//@ts-ignore
+const isHarmony = Platform.OS  === 'harmony' 
 
-export default React.memo(DatePickerWrapper)
+export default isHarmony ? NativeDatePicker : React.memo(DatePickerWrapper)
