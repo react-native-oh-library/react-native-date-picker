@@ -30,12 +30,28 @@ export struct NativeDatePickerView {
   public ctx!: RNComponentContext
   public tag: number = 0
   @State descriptor: NativeDatePickerDescriptor = {} as NativeDatePickerDescriptor
-  @State date: string  = new Date().toString()
+  @State date: string  = new Date().toString();
   private cleanUpCallbacks: (() => void)[] = []
   private eventEmitter: RNC.NativeDatePickerView.EventEmitter | undefined = undefined
   aboutToAppear() {
     this.eventEmitter = new RNC.NativeDatePickerView.EventEmitter(this.ctx.rnInstance, this.tag)
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<NativeDatePickerDescriptor>(this.tag)
+    //处理modal为false,默认date和可选时间范围问题
+    this.date = this.descriptor.rawProps.date ?  new Date(this.descriptor.rawProps.date).toString() : new Date().toString();
+    if(this.descriptor.rawProps.minimumDate){
+      const minimumDate = new Date(this.descriptor.rawProps.minimumDate).getTime();
+      const curDate = this.descriptor.rawProps.date ? new Date(this.descriptor.rawProps.date).getTime() : new Date().getTime();
+      if(curDate<minimumDate){
+        this.date = new Date(this.descriptor.rawProps.minimumDate).toString();
+      }
+    }
+    if(this.descriptor.rawProps.maximumDate){
+      const maximumDate = new Date(this.descriptor.rawProps.maximumDate).getTime();
+      const curDate = this.descriptor.rawProps.date ? new Date(this.descriptor.rawProps.date).getTime() : new Date().getTime();
+      if(curDate>maximumDate){
+        this.date = new Date(this.descriptor.rawProps.maximumDate).toString();
+      }
+    }
     this.cleanUpCallbacks.push(this.ctx.descriptorRegistry.subscribeToDescriptorChanges(this.tag,
       (newDescriptor) => {
         this.descriptor = (newDescriptor as NativeDatePickerDescriptor)
