@@ -1,8 +1,8 @@
 {
   "name": "@react-native-oh-tpl/react-native-date-picker",
-  "version": "5.0.4-0.0.5",
+  "version": "5.0.4-nc.0.0.6",
   "description": "Please describe the basic information.",
-  "main": "Index.ets",
+  "main": "index.ets",
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
