@@ -14,7 +14,7 @@ const getMessage = (message) => {
 }
 
 const messages = {
-  ios: {
+  harmony: {
     expo: getMessage([
       "1. Have rebuilt your app (with for instance 'npx expo run:ios')",
       '2. Are not using Expo Go (Expo Go is unsupported). See README for more info: ',
@@ -23,16 +23,6 @@ const messages = {
     nonExpo: getMessage([
       "1. Installed pods (by for instance running 'cd ios && pod install')",
       "2. Rebuilt the app (by for instance 'npx react-native run-ios')",
-    ]),
-  },
-  android: {
-    expo: getMessage([
-      "1. Have rebuilt your app (with for instance 'npx expo run:android')",
-      '2. Are not using Expo Go (Expo Go is unsupported). See README for more info: ',
-      'https://github.com/henninghall/react-native-date-picker',
-    ]),
-    nonExpo: getMessage([
-      "1. Rebuilt the app (by for instance 'npx react-native run-ios')",
     ]),
   },
 }
