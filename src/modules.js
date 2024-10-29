@@ -10,8 +10,7 @@ import { getInstallationErrorMessage } from './installationError'
 export const getNativeComponent = () => {
   try {
     switch (Platform.OS) {
-      case 'android':
-      case 'ios':
+      case 'harmony':
         return requireNativeComponent('RNDatePicker')
       default:
         throw Error(
@@ -28,9 +27,7 @@ export const getNativeComponent = () => {
 export const getNativeModule = () => {
   try {
     switch (Platform.OS) {
-      case 'ios':
-        return NativeModules.RNDatePicker
-      case 'android':
+      case 'harmony':
         return TurboModuleRegistry
           ? TurboModuleRegistry.get('RNDatePicker')
           : NativeModules.RNDatePicker
