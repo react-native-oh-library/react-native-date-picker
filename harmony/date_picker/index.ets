@@ -1,1 +1,2 @@
-export { NativeDatePickerView } from './src/main/ets/components/index'
+export { RNDatePicker } from './src/main/ets/components/index'
+export * from './ts';
