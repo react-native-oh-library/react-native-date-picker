@@ -12,6 +12,8 @@ export const getNativeComponent = () => {
     switch (Platform.OS) {
       case 'android':
       case 'ios':
+      //@ts-ignore
+      case 'harmony':
         return requireNativeComponent('RNDatePicker')
       default:
         throw Error(
@@ -31,6 +33,8 @@ export const getNativeModule = () => {
       case 'ios':
         return NativeModules.RNDatePicker
       case 'android':
+      //@ts-ignore
+      case 'harmony':
         return TurboModuleRegistry
           ? TurboModuleRegistry.get('RNDatePicker')
           : NativeModules.RNDatePicker

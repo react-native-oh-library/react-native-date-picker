@@ -46,7 +46,7 @@
     "alias": "react-native-date-picker",
     "codegenConfig": {
       "specPaths": [
-        "./src"
+        "./src/fabric"
       ]
     }
   },
