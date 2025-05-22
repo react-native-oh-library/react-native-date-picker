@@ -92,6 +92,9 @@ export struct RNDatePicker {
       onDateChange: (value: Date) => {
         this.eventEmitter!.emit("change", { timestamp: new Date(value).getTime() })
       },
+      onWillDisappear: () => {
+        this.eventEmitter!.emit("cancel", {})
+      }
     }))
   }
 
@@ -109,6 +112,9 @@ export struct RNDatePicker {
         const time = formatDateByTime(value.hour, value.minute, 0)
         this.eventEmitter!.emit("change", { timestamp: new Date(time).getTime() })
       },
+      onWillDisappear: () => {
+        this.eventEmitter!.emit("cancel", {})
+      }
     })
   }
 
