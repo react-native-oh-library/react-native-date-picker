@@ -23,7 +23,7 @@
  */
 
 import { RNComponentContext, RNViewBase } from '@rnoh/react-native-openharmony';
-import { RNC } from "@rnoh/react-native-openharmony/generated/ts"
+import { RNC } from "../generated/ts"
 import { formatDateByTime, mergeObject, formatDate, formatTime, addZero } from '../utils'
 
 @Component

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import { RNC } from '@rnoh/react-native-openharmony/generated/ts';
+import { RNC } from './generated/ts';
 import type { TurboModule, TurboModuleContext, } from '@rnoh/react-native-openharmony/ts';
 import {
   DescriptorWrapperFactoryByDescriptorType,
@@ -31,7 +31,14 @@ import {
   TurboModulesFactory
 } from '@rnoh/react-native-openharmony/ts';
 import { RNDatePickerTurboModule } from './RNDatePickerTurboModule';
+import { RNOHPackage, ComponentBuilderContext } from '@rnoh/react-native-openharmony'
+import { RNDatePicker } from './components/index.ets';
 
+
+@Builder
+function DatePicker(ctx: ComponentBuilderContext) {
+  RNDatePicker({ ctx: ctx.rnComponentContext, tag: ctx.tag })
+}
 class RNDatePickerTurboModulesFactory extends TurboModulesFactory {
   createTurboModule(name: string): TurboModule | null {
     if (name === 'RNDatePicker') {
@@ -46,14 +53,18 @@ class RNDatePickerTurboModulesFactory extends TurboModulesFactory {
 }
 
 
-export class RNDatePickerPackage extends RNPackage {
+export class RNDatePickerPackage extends RNOHPackage {
   createDescriptorWrapperFactoryByDescriptorType(ctx: DescriptorWrapperFactoryByDescriptorTypeCtx): DescriptorWrapperFactoryByDescriptorType {
     return {
-      [RNC.RNDatePicker.NAME]: (ctx) => new RNC.RNDatePicker.DescriptorWrapper(ctx.descriptor)
+      "RNDatePicker": (ctx) => new RNC.RNDatePicker.DescriptorWrapper(ctx.descriptor)
     }
   }
 
   createTurboModulesFactory(ctx: TurboModuleContext): TurboModulesFactory {
     return new RNDatePickerTurboModulesFactory(ctx);
+  }
+
+  createWrappedCustomRNComponentBuilderByComponentNameMap(): Map<string, WrappedBuilder<[ComponentBuilderContext]>> {
+    return new Map().set(RNC.RNDatePicker.NAME, wrapBuilder(DatePicker))
   }
 }

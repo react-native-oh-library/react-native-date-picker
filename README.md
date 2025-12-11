@@ -1,6 +1,6 @@
-# @react-native-oh-tpl/react-native-date-picker
+# @react-native-ohos/react-native-date-picker
 
-This project is based on [react-native-date-picker v5.0.4](https://github.com/henninghall/react-native-date-picker/releases/tag/v5.0.4)
+This project is based on [react-native-date-picker v5.0.4](https://github.com/henninghall/react-native-date-picker/tree/5.0.4)
 
 ## Documentation
 
