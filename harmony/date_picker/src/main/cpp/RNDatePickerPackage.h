@@ -21,33 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { TurboModule } from '@rnoh/react-native-openharmony/ts';
-import { TM } from './generated/ts'
+#ifndef RNDatePickerPackage_H
+#define RNDatePickerPackage_H
 
-const TAG = 'RNDatePicker';
+#include "generated/RNOH/generated/BaseReactNativeDatePickerPackage.h"
+#pragma once
 
-export class RNDatePickerTurboModule extends TurboModule implements TM.RNDatePicker.Spec {
-  constructor(ctx) {
-    super(ctx);
-  }
-
-  getConstants(): {} {
-    return {}
-  }
-
-  closePicker(): void {
-
-  }
-
-  openPicker(props: Object): void {
-
-  }
-
-  removeListeners(type: number): void {
-
-  }
-
-  addListener(eventName: string): void {
-
-  }
-}
+namespace rnoh {
+class RNDatePickerPackage : public BaseReactNativeDatePickerPackage {
+    using Super = BaseReactNativeDatePickerPackage;
+    using Super::Super;
+};
+} // namespace rnoh
+#endif // RNDatePickerPackage_H
